@@ -5,6 +5,7 @@
  */
 package chatpeertopeer;
 
+import java.awt.Graphics;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -12,6 +13,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -23,11 +26,14 @@ public class NewJFrame extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     ThreadInvioDati t;
+    Paint p;
 
     public NewJFrame() throws SocketException {
         initComponents();
         t = new ThreadInvioDati();
+        p = new Paint(this, 33);
         t.start();
+        p.start();
     }
 
     /**
@@ -44,6 +50,11 @@ public class NewJFrame extends javax.swing.JFrame {
         nome = new javax.swing.JTextField();
         indirizzo = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        messaggio = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,6 +75,33 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 345, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 250, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(jPanel1);
+
+        jButton2.setText("Invia");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Disconnetti");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,15 +109,29 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(nome)
-                        .addComponent(indirizzo, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(128, 128, 128))
+                        .addComponent(indirizzo, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)))
+                .addGap(202, 202, 202))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(108, 108, 108)
+                        .addComponent(messaggio, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(161, 161, 161)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,7 +146,15 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(indirizzo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(jButton1)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(messaggio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         pack();
@@ -123,6 +183,73 @@ public class NewJFrame extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    //Invia messaggio
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:        
+        String mess = messaggio.getText();
+        GestioneMessaggi.getInstance().Aggiungi(mess, "d");
+        try {
+            t.Scrivi(mess);
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        messaggio.setText("");
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            // TODO add your handling code here:
+
+            t.Disconnetti();
+        } catch (IOException ex) {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        jPanel1 = null;
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    public void paint(Graphics g) {
+        super.paint(g);
+        if (!GestioneMessaggi.getInstance().getMessaggio().equals("")) {
+            String tipo = GestioneMessaggi.getInstance().getMessaggio().split(";")[0];
+            String messaggio = GestioneMessaggi.getInstance().getMessaggio().split(";")[1];
+            if (tipo.equals("s")) {
+                stampaSinistra(messaggio);
+                GestioneMessaggi.getInstance().setMessaggio("");
+            } else {
+                stampaDestra(messaggio);
+                GestioneMessaggi.getInstance().setMessaggio("");
+            }
+        }
+    }
+
+    int y = 20;
+    int h = 20;
+
+    public void stampaDestra(String msg) {
+        JLabel label = new JLabel();
+        label.setBounds(200, y, 150 + msg.length(), 20);
+        label.setText(msg);
+        this.add(label);
+        jPanel1.add(label);
+        jPanel1.setSize(jPanel1.getWidth(), h);
+        h += 20;
+        y += 20;
+    }
+
+    public void stampaSinistra(String msg) {
+        JLabel label = new JLabel();
+        label.setBounds(0, y, 150 + msg.length(), 20);
+        label.setText(msg);
+        this.add(label);
+        jPanel1.add(label);
+        jPanel1.setSize(jPanel1.getWidth(), h);
+        h += 20;
+        y += 20;
+    }
 
     /**
      * @param args the command line arguments
@@ -166,8 +293,13 @@ public class NewJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField indirizzo;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField messaggio;
     private javax.swing.JTextField nome;
     // End of variables declaration//GEN-END:variables
 }

@@ -56,6 +56,7 @@ public class ThreadInvioDati extends Thread {
                 Logger.getLogger(ThreadInvioDati.class.getName()).log(Level.SEVERE, null, ex);
             }
             String messaggio = new String(Packet.getData()).trim();
+            System.out.println(messaggio);
             try {
                 Elabora(messaggio, Packet);
             } catch (IOException ex) {
@@ -75,18 +76,24 @@ public class ThreadInvioDati extends Thread {
             case "n":
                 ConnessioneRifiutata();
                 break;
+            case "m":
+                RiceviMessaggio(mess);
+                break;
+            case "c":
+                Chiudi();
+                break;
             //fare caso C-> per chiusura e caso M-> per messaggi
         }
     }
 
     public void Apertura(String m, DatagramPacket p) throws IOException {
-        
+
         System.out.println("Ricevo Richiesta Di Connessione");
-        
+
         nomedestinatario = m.substring(2);
         String str = "";
         String name = JOptionPane.showInputDialog(pane, "Vuoi accettare la connessione, se sì inserisci il tuo nome qui!", null);
-        if (name != null || !name.trim().equals("")) {
+        if (name != null) {
             str = "y;" + name + ";";
             byte[] buffer = str.getBytes();
             DatagramPacket Packet = new DatagramPacket(buffer, buffer.length);
@@ -96,6 +103,7 @@ public class ThreadInvioDati extends Thread {
             Packet.setPort(porta);
             client.send(Packet);
             stato = 1;
+            ipdestinazione = p.getAddress();
         } else {
             str = "n";
             byte[] buffer = str.getBytes();
@@ -115,6 +123,7 @@ public class ThreadInvioDati extends Thread {
             nomedestinatario = m.substring(2);
             InviaPacchetto("y;", p.getAddress());
             stato = 1;
+            ipdestinazione = p.getAddress();
         } else if (stato == 1) {
             System.out.println("Apro Ufficialmente la Comunicazione");
             connesso = true;
@@ -136,6 +145,34 @@ public class ThreadInvioDati extends Thread {
         InviaPacchetto(str, i);
     }
 
+    public void Scrivi(String m) throws IOException {
+
+        InviaPacchetto("m;" + m, ipdestinazione);
+    }
+
+    public void RiceviMessaggio(String m) {
+        GestioneMessaggi.getInstance().Aggiungi(m.substring(2), "s");
+    }
+
+    public void Chiudi() throws IOException {
+        JOptionPane.showMessageDialog(null, "Disconnesso da " + nomedestinatario);
+        nomemittente = "";
+        nomedestinatario = "";
+        ipdestinazione = null;
+        connesso = false;
+        stato = 0;
+        GestioneMessaggi.getInstance().Azzera();
+    }
+
+    public void Disconnetti() throws IOException{
+        InviaPacchetto("c", ipdestinazione);
+        nomemittente = "";
+        nomedestinatario = "";
+        ipdestinazione = null;
+        connesso = false;
+        stato = 0;
+        GestioneMessaggi.getInstance().Azzera();
+    }
     public void InviaPacchetto(String messaggio, InetAddress indirizzo) throws IOException {
         byte[] buffer = messaggio.getBytes();
         DatagramPacket p = new DatagramPacket(buffer, buffer.length);
